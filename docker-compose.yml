@@ -5,7 +5,7 @@ services:
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     environment:
-      - NODE_ENV=${NODE_ENV}
+      - NODE_ENV_BACKEND=${NODE_ENV_BACKEND}
       - DATABASE_URL=${DATABASE_URL}
       - LOCAL_MODEL=${LOCAL_MODEL}
       - LOCAL_MODEL_NAME=${LOCAL_MODEL_NAME}
@@ -31,7 +31,7 @@ services:
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     environment:
-      - NODE_ENV=${NODE_ENV}
+      - NODE_ENV_FRONTEND=${NODE_ENV_FRONTEND}
       - NEXT_PUBLIC_API_URL=http://rubus-backend:${BACKEND_PORT}
       - PORT=${FRONTEND_PORT}
     env_file:

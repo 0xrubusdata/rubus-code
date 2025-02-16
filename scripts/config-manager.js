@@ -74,6 +74,22 @@ const startDocker = () => {
 };
 
 const configureEnvironment = async () => {
+  // Check if config override exists and bypass setup
+  if (fs.existsSync(overrideFilePath)) {
+    console.log('🟢 Configuration found. Skipping setup...');
+    console.log('🚀 Starting Docker containers...');
+    const { exec } = require('child_process');
+    exec('docker compose up --build', (err, stdout, stderr) => {
+      if (err) {
+        console.error(`Error: ${err.message}`);
+        return;
+      }
+      if (stderr) console.error(stderr);
+      console.log(stdout);
+    });
+    process.exit(0); // Stop script execution
+  }
+  
   console.log('Configuring environment variables...');
   const envVariables = loadEnv();
   const modelsLocal = loadJsonFile(modelsLocalPath);
