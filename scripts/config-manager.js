@@ -96,6 +96,9 @@ const configureEnvironment = async () => {
   const modelsExternal = loadJsonFile(modelsExternalPath);
   const newConfig = { ...envVariables };
 
+  // Frontend Configuration
+  newConfig['NODE_ENV_FRONTEND'] = await askQuestion('Set NODE_ENV_FRONTEND', envVariables['NODE_ENV_FRONTEND']);
+  
   // Backend Configuration
   newConfig['BACKEND_PORT'] = await askQuestion('Set BACKEND_PORT', envVariables['BACKEND_PORT']);
   displayServiceUrl('Backend API', newConfig['BACKEND_PORT']);
