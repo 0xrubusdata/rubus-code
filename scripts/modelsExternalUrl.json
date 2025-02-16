@@ -1,0 +1,79 @@
+{
+  "developers": [
+    {
+      "name": "OpenAI",
+      "models": [
+        {
+          "name": "GPT-4",
+          "url": "https://api.openai.com/v1/chat/completions"
+        },
+        {
+          "name": "GPT-3.5",
+          "url": "https://api.openai.com/v1/chat/completions"
+        }
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "models": [
+        {
+          "name": "Claude-3",
+          "url": "https://api.anthropic.com/v1/complete"
+        },
+        {
+          "name": "Claude-2",
+          "url": "https://api.anthropic.com/v1/complete"
+        }
+      ]
+    },
+    {
+      "name": "Google DeepMind",
+      "models": [
+        {
+          "name": "Gemini-1",
+          "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1:generateText"
+        }
+      ]
+    },
+    {
+      "name": "Mistral AI",
+      "models": [
+        {
+          "name": "Mistral-7B",
+          "url": "https://api.mistral.ai/v1/completions"
+        },
+        {
+          "name": "Mixtral-8x7B",
+          "url": "https://api.mistral.ai/v1/completions"
+        }
+      ]
+    },
+    {
+      "name": "Cohere",
+      "models": [
+        {
+          "name": "Command-R+",
+          "url": "https://api.cohere.ai/v1/generate"
+        }
+      ]
+    },
+    {
+      "name": "Meta",
+      "models": [
+        {
+          "name": "Llama-3",
+          "url": "https://api.meta.ai/v1/completions"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek",
+      "models": [
+        {
+          "name": "DeepSeek-Chat",
+          "url": "https://api.deepseek.com/v1/completions"
+        }
+      ]
+    }
+  ]
+}

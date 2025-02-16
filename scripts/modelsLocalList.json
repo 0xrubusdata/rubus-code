@@ -1,0 +1,166 @@
+{
+  "developers": [
+    {
+      "name": "Meta",
+      "models": [
+        {
+          "name": "llama3.3",
+          "versions": [
+            {
+              "size": "70b",
+              "file_size": "43GB"
+            }
+          ]
+        },
+        {
+          "name": "llama3.2",
+          "versions": [
+            {
+              "size": "1b",
+              "file_size": "1.3GB"
+            },
+            {
+              "size": "3b",
+              "file_size": "2.0GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Microsoft",
+      "models": [
+        {
+          "name": "phi4",
+          "versions": [
+            {
+              "size": "14b",
+              "file_size": "9.1GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mistral AI",
+      "models": [
+        {
+          "name": "mistral",
+          "versions": [
+            {
+              "size": "7b",
+              "file_size": "4.1GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alibaba Cloud",
+      "models": [
+        {
+          "name": "qwen",
+          "versions": [
+            {
+              "size": "0.5b",
+              "file_size": "395MB"
+            },
+            {
+              "size": "1.8b",
+              "file_size": "1.1GB"
+            },
+            {
+              "size": "4b",
+              "file_size": "2.3GB"
+            },
+            {
+              "size": "7b",
+              "file_size": "4.5GB"
+            },
+            {
+              "size": "14b",
+              "file_size": "8.2GB"
+            },
+            {
+              "size": "32b",
+              "file_size": "18GB"
+            },
+            {
+              "size": "72b",
+              "file_size": "41GB"
+            },
+            {
+              "size": "110b",
+              "file_size": "63GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Google DeepMind",
+      "models": [
+        {
+          "name": "gemma",
+          "versions": [
+            {
+              "size": "2b",
+              "file_size": "1.7GB"
+            },
+            {
+              "size": "7b",
+              "file_size": "5.0GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Deepseek",
+      "models": [
+        {
+          "name": "deepscaler",
+          "versions": [
+            {
+              "size": "1.5b",
+              "file_size": "3.6GB"
+            }
+          ]
+        },
+        {
+          "name": "deepseek-r1",
+          "versions": [
+            {
+              "size": "1.5b",
+              "file_size": "1.1GB"
+            },
+            {
+              "size": "7b",
+              "file_size": "4.7GB"
+            },
+            {
+              "size": "8b",
+              "file_size": "4.9GB"
+            },
+            {
+              "size": "14b",
+              "file_size": "9.0GB"
+            },
+            {
+              "size": "32b",
+              "file_size": "20GB"
+            },
+            {
+              "size": "70b",
+              "file_size": "43GB"
+            },
+            {
+              "size": "671b",
+              "file_size": "404GB"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

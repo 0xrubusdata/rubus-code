@@ -1,0 +1,136 @@
+services:
+  rubus-backend:
+    build: ./backend
+    container_name: rubus-backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - LOCAL_MODEL=${LOCAL_MODEL}
+      - LOCAL_MODEL_NAME=${LOCAL_MODEL_NAME}
+      - DISTANT_MODEL=${DISTANT_MODEL}
+      - DISTANT_MODEL_URL=${DISTANT_MODEL_URL}
+      - DISTANT_MODEL_NAME=${DISTANT_MODEL_NAME}
+      - DISTANT_MODEL_API_KEY=${DISTANT_MODEL_API_KEY}
+      - PORT=${BACKEND_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      - rubus-postgres
+      - rubus-faiss
+      - rubus-ollama
+    networks:
+      - code-network
+
+  rubus-frontend:
+    build: ./frontend
+    container_name: rubus-frontend
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - NEXT_PUBLIC_API_URL=http://rubus-backend:${BACKEND_PORT}
+      - PORT=${FRONTEND_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      - rubus-backend
+    networks:
+      - code-network
+
+  rubus-postgres:
+    image: postgres:15
+    container_name: rubus-postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config
+    networks:
+      - code-network
+
+  rubus-adminer:
+    image: adminer
+    container_name: rubus-adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: rubus-postgres
+    ports:
+      - "${ADMIRER_PORT}:${ADMIRER_PORT}"    
+    networks:
+      - code-network  
+
+  rubus-faiss:
+    image: chromadb/chroma
+    container_name: rubus-chromadb
+    restart: always
+    ports:
+      - "${VECTOR_DB_PORT}:${VECTOR_DB_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config
+    networks:
+      - code-network
+
+  rubus-ollama:
+    image: ollama/ollama
+    container_name: rubus-ollama
+    restart: always
+    ports:
+      - "${OLLAMA_PORT}:${OLLAMA_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config
+    networks:
+      - code-network
+
+  #rubus-scheduler:
+  #  image: node:18
+  #  container_name: rubus-scheduler
+  #  working_dir: /app
+  #  volumes:
+  #    - ./backend:/app
+  #    - ./config:/app/config
+  #  env_file:
+  #    - .env
+  #  command: ["npm", "run", "start:scheduler"]
+  #  depends_on:
+  #    - rubus-backend
+  #  networks:
+  #    - code-network
+
+  rubus-portainer:
+    image: portainer/portainer-ce
+    container_name: rubus-portainer
+    restart: always
+    ports:
+      - "${PORTAINER_PORT}:${PORTAINER_PORT}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+      - ./config:/app/config
+    env_file:
+      - .env
+    networks:
+      - code-network
+
+volumes:
+  portainer_data:
+    driver: local
+
+networks:
+  code-network:
+    driver: bridge
