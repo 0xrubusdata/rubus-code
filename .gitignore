@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # project config
-config/
+config/config.override.json
