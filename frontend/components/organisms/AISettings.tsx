@@ -1,11 +1,25 @@
-// AISettings.tsx
+// components/AISettings.tsx
+import { Typography, Paper } from '@mui/material';
+
 export function AISettings() {
     return (
-        <div className="p-4 bg-gray-700 rounded-lg">
-        <h2 className="text-lg font-semibold">AI Settings</h2>
-        <p className="text-gray-400">Configure your AI preferences here.</p>
-        </div>
+        <Paper 
+            elevation={0}
+            sx={{
+                p: 3,
+                mt: 3,
+                bgcolor: 'background.paper',
+                border: '1px solid',
+                borderColor: 'grey.200',
+                borderRadius: 2
+            }}
+        >
+            <Typography variant="h6" color="grey.800" gutterBottom>
+                AI Settings
+            </Typography>
+            <Typography color="grey.600">
+                Configure your AI preferences here.
+            </Typography>
+        </Paper>
     );
 }
-  
-  

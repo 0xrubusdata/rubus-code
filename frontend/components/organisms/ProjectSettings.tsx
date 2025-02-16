@@ -1,9 +1,25 @@
-// ProjectSettings.tsx
+// components/ProjectSettings.tsx
+import { Typography, Paper } from '@mui/material';
+
 export function ProjectSettings() {
     return (
-      <div className="p-4 bg-gray-700 rounded-lg mt-4">
-        <h2 className="text-lg font-semibold">Project Settings</h2>
-        <p className="text-gray-400">Manage settings for the loaded project.</p>
-      </div>
+        <Paper 
+            elevation={0}
+            sx={{
+                p: 3,
+                mt: 3,
+                bgcolor: 'background.paper',
+                border: '1px solid',
+                borderColor: 'grey.200',
+                borderRadius: 2
+            }}
+        >
+            <Typography variant="h6" color="grey.800" gutterBottom>
+                Project Settings
+            </Typography>
+            <Typography color="grey.600">
+                Manage settings for the loaded project.
+            </Typography>
+        </Paper>
     );
-  }
+}
