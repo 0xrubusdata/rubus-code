@@ -131,3 +131,4 @@ dist
 
 # project config
 config/config.override.json
+.env.override

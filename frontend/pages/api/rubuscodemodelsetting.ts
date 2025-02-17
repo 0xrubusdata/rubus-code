@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { BACKEND_BASE_URL } from '../../utils/apiConfig';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SettingsResponse | { error: string }>) {
     try {
-        // Utilisation de process.env pour éviter une valeur hardcodée
-        const backendBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-        const backendUrl = `${backendBaseUrl}/rubuscodesetting`;
+        const backendUrl = `${BACKEND_BASE_URL}/rubuscodemodelsetting`;
 
         const response = await fetch(backendUrl);
         if (!response.ok) throw new Error('Failed to fetch backend settings');

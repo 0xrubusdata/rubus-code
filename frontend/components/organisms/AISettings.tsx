@@ -1,8 +1,8 @@
+import { useAISettings } from '@/hooks/models/useAISettings';
 import { Typography, Paper, CircularProgress } from '@mui/material';
-import { useSettings } from '@/hooks/useSettings';
 
 export function AISettings() {
-    const { settings, loading, error } = useSettings();
+    const { settings, loading, error } = useAISettings();
 
     return (
         <Paper 

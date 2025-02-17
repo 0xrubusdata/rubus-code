@@ -1,7 +1,7 @@
+import { fetchAISettings } from '@/services/models/settingsAIService';
 import { useState, useEffect } from 'react';
-import { fetchSettings } from '@/services/settingsService';
 
-export function useSettings() {
+export function useAISettings() {
     const [settings, setSettings] = useState<any | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -9,7 +9,7 @@ export function useSettings() {
     useEffect(() => {
         async function loadSettings() {
             try {
-                const data = await fetchSettings();
+                const data = await fetchAISettings();
                 setSettings(data);
             } catch (err) {
                 setError('Error fetching settings');

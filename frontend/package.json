@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p $FRONTEND_PORT",
     "build": "next build",
     "start": "next start -p $FRONTEND_PORT",
     "lint": "next lint"

@@ -24,6 +24,19 @@
               "file_size": "2.0GB"
             }
           ]
+        },
+        {
+          "name": "codellama",
+          "versions": [
+            {
+              "size": "7b",
+              "file_size": "3.8GB"
+            },
+            {
+              "size": "13b",
+              "file_size": "7.4GB"
+            }
+          ]
         }
       ]
     },

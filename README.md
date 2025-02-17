@@ -56,10 +56,10 @@ The CLI will guide you through the configuration process:
 - All settings default to `.env` values if no input is provided.
 
 ### 4️⃣ Configuration Persistence
-- Once setup is complete, settings are saved in `config/config.override.json`.
+- Once setup is complete, settings are saved in `.env.override`.
 - To reset settings, delete the override file:
 ```bash
-rm config/config.override.json
+rm .env.override
 ```
 
 ## 🔍 Usage

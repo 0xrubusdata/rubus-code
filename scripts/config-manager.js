@@ -5,7 +5,7 @@ const axios = require('axios');
 const { spawn } = require('child_process');
 
 const envFilePath = path.join(__dirname, '../.env');
-const overrideFilePath = path.join(__dirname, '../config/config.override.json');
+const overrideFilePath = path.join(__dirname, '../.env.override');
 const modelsExternalPath = path.join(__dirname, 'modelsExternalUrl.json');
 const modelsLocalPath = path.join(__dirname, 'modelsLocalList.json');
 
@@ -59,34 +59,33 @@ const validateApiKey = async (url, apiKey) => {
 const startDocker = () => {
   return new Promise((resolve, reject) => {
     console.log('Starting Docker containers...');
-    
-    // Using spawn instead of exec for better output handling
+
+    // Charger manuellement les variables d'environnement de .env.override
+    require('dotenv').config({ path: './.env.override' });
+
+    // Vérifier que les variables sont bien chargées
+    console.log('FRONTEND_PORT:', process.env.FRONTEND_PORT);
+    console.log('BACKEND_PORT:', process.env.BACKEND_PORT);
+
+    const { spawn } = require('child_process');
+
     const dockerProcess = spawn('docker', ['compose', 'up', '--build'], {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      env: process.env // Passer les variables d'environnement modifiées
     });
 
     dockerProcess.on('error', (error) => {
       reject(error);
     });
-
-    // Note: We don't need to handle 'close' event when using inherit
   });
 };
+
 
 const configureEnvironment = async () => {
   // Check if config override exists and bypass setup
   if (fs.existsSync(overrideFilePath)) {
     console.log('🟢 Configuration found. Skipping setup...');
-    console.log('🚀 Starting Docker containers...');
-    const { exec } = require('child_process');
-    exec('docker compose up --build', (err, stdout, stderr) => {
-      if (err) {
-        console.error(`Error: ${err.message}`);
-        return;
-      }
-      if (stderr) console.error(stderr);
-      console.log(stdout);
-    });
+    await startDocker();
     process.exit(0); // Stop script execution
   }
   
@@ -181,9 +180,19 @@ const configureEnvironment = async () => {
     }
   }
 
-  // Save configuration
-  fs.writeFileSync(overrideFilePath, JSON.stringify(newConfig, null, 2));
-  console.log('\nConfiguration saved to config/config.override.json');
+  const generateEnvOverride = (config) => {
+    const envOverridePath = path.join(__dirname, '../.env.override');
+  
+    const envData = Object.entries(config)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('\n');
+  
+    fs.writeFileSync(envOverridePath, envData);
+    console.log(`✅ The .env.override file was generated successfully.`);
+  };
+  
+  // Générer le fichier .env.override
+  generateEnvOverride(newConfig);
   
   rl.close();
   

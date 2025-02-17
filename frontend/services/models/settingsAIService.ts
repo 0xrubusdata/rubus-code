@@ -1,6 +1,6 @@
-export async function fetchSettings() {
+export async function fetchAISettings() {
     try {
-        const response = await fetch('/api/rubuscodesetting');
+        const response = await fetch('/api/rubuscodemodelsetting/');
         if (!response.ok) throw new Error('Failed to fetch settings');
 
         return await response.json();

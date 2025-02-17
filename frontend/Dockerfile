@@ -17,7 +17,8 @@ COPY . .
 RUN npm run build
 
 # Expose the frontend port
-EXPOSE ${FRONTEND_PORT}
+EXPOSE $FRONTEND_PORT
 
 # Start Next.js
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "if [ \"$NODE_ENV_FRONTEND\" = \"development\" ]; then npm run dev; else npm run start; fi"]
+
