@@ -11,6 +11,7 @@ import {
     Radio,
     Box
 } from '@mui/material';
+import { projectUpload } from '@/services/project/projectUploadService';
 
 interface UploadProjectFormProps {
     onProjectUploaded: (data: { type: 'url' | 'local', path: string }) => void;
@@ -21,59 +22,45 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
     const [inputValue, setInputValue] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedDirectory, setSelectedDirectory] = useState<FileSystemDirectoryHandle | null>(null);
 
     const validateAndUpload = async () => {
         setError('');
         setIsLoading(true);
-
-        try {
-            if (projectSource === 'local') {
-                if (!selectedDirectory) {
-                    throw new Error('Please select a directory');
-                }
-
-                try {
-                    const gitDir = await selectedDirectory.getDirectoryHandle('.git', { create: false });
-                    if (!gitDir) {
-                        throw new Error('No .git directory found');
-                    }
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars    
-                } catch (err) {
-                    throw new Error('This directory is not a Git repository. Please select a directory containing a .git folder.');
-                }
-            } else {
-                // Validation basique d'URL pour les projets distants
-                if (!inputValue.startsWith('http://') && !inputValue.startsWith('https://') && !inputValue.endsWith('.git')) {
-                    throw new Error('Please enter a valid URL starting with http:// or https://');
-                }
-            }
-
-            // Ici, vous pouvez appeler votre API backend
-            // await api.uploadProject({ type: projectSource, path: inputValue });
-            
-            onProjectUploaded({ type: projectSource, path: inputValue });
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleDirectorySelect = async () => {
-        try {
-            // @ts-expect-error - L'API showDirectoryPicker n'est pas encore dans les types TypeScript
-            const dirHandle = await window.showDirectoryPicker();
-            setSelectedDirectory(dirHandle);
-            setInputValue(dirHandle.name);
-        } catch (err) {
-            if (err instanceof Error && err.name === 'AbortError') {
-                // L'utilisateur a annulé la sélection
+        
+        const isURL = inputValue.startsWith('http://') || inputValue.startsWith('https://');
+        const isGitRepo = inputValue.endsWith('.git');
+    
+        if (isURL) {
+            if (!isGitRepo) {
+                setError("A valid repository URL must end with .git");
+                setIsLoading(false);
                 return;
             }
-            setError('Failed to select directory');
-            setSelectedDirectory(null);
-            setInputValue('');
+        } else {
+            const isAbsolutePath =
+                inputValue.startsWith('/home/') ||  // Linux
+                inputValue.startsWith('/Users/') || // macOS
+                /^[A-Za-z]:\\/.test(inputValue);    // Windows (C:\ ou D:\)
+    
+            if (!isAbsolutePath) {
+                setError("Please enter a valid absolute path.");
+                setIsLoading(false);
+                return;
+            }
+        }
+    
+        console.log("Valid input:", inputValue);
+        try {
+            const response = await projectUpload(isURL ? 'url' : 'local', inputValue);
+            if (response) {
+                setIsLoading(false);
+            }
+            onProjectUploaded({ type: isURL ? 'url' : 'local', path: inputValue });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars   
+        } catch (err) {
+            setError("Failed to upload project");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -98,7 +85,6 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
                     setProjectSource(e.target.value as 'url' | 'local');
                     setInputValue('');
                     setError('');
-                    setSelectedDirectory(null);
                 }}
                 sx={{ mb: 2 }}
             >
@@ -112,14 +98,7 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
                     label={projectSource === 'url' ? "Enter repository URL" : "Local directory path"}
                     variant="outlined"
                     value={inputValue} 
-                    onChange={(e) => {
-                        if (projectSource === 'url') {
-                            setInputValue(e.target.value);
-                        }
-                    }}
-                    InputProps={{
-                        readOnly: projectSource === 'local'
-                    }}
+                    onChange={(e) => setInputValue(e.target.value)}
                     sx={{ 
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
@@ -131,15 +110,6 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
                         },
                     }}
                 />
-                {projectSource === 'local' && (
-                    <Button 
-                        variant="outlined"
-                        onClick={handleDirectorySelect}
-                        sx={{ minWidth: '120px' }}
-                    >
-                        Browse
-                    </Button>
-                )}
             </Box>
 
             {error && <Alert severity="error" sx={{ my: 2 }}>{error}</Alert>}
