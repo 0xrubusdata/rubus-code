@@ -67,11 +67,21 @@ services:
       - code-network
 
   rubus-ollama:
-    image: ollama/ollama
+    build:
+      context: ./ollama
+      dockerfile: Dockerfile
     container_name: rubus-ollama
     restart: always
     ports:
       - "${OLLAMA_PORT}:${OLLAMA_PORT}"
+    environment:
+      - LOCAL_MODEL=${LOCAL_MODEL}
+      - LOCAL_MODEL_NAME=${LOCAL_MODEL_NAME}
+      - OLLAMA_PORT=${OLLAMA_PORT}
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama/init.sh:/init.sh
+    entrypoint: ["/bin/sh", "/init.sh"]
     env_file:
       - .env
       - .env.override
@@ -109,6 +119,8 @@ services:
       - code-network
 
 volumes:
+  ollama_data:
+    driver: local
   portainer_data:
     driver: local
 

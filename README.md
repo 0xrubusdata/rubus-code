@@ -69,9 +69,9 @@ curl http://localhost:3000/api/test-model
 ```
 
 ## 🏗️ Roadmap
-- [ ] **Implement AI model selection & validation** ✅ *(In Progress)*
-- [ ] **Load and index a project for AI awareness** *(Next Step)*
-- [ ] **Enable AI-driven development suggestions** *(Upcoming)*
+- [ ] **Implement AI model selection & validation** ✅ *(Done)*
+- [ ] **Load and index a project for AI awareness** ✅ *(In Progress)*
+- [ ] **Enable AI-driven development suggestions** *(Next Step)*
 
 ## 📜 License
 MIT License - Free to use and contribute!
