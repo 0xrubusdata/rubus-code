@@ -3,7 +3,7 @@ import { BACKEND_BASE_URL } from '../../utils/apiConfig';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SettingsResponse | { error: string }>) {
     try {
-        const backendUrl = `${BACKEND_BASE_URL}/rubuscodemodelsetting`;
+        const backendUrl = `${BACKEND_BASE_URL}/getmodelsetting`;
 
         const response = await fetch(backendUrl);
         if (!response.ok) throw new Error('Failed to fetch backend settings');

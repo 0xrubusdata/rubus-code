@@ -1,4 +1,7 @@
-export const projectUpload = async (type: 'url' | 'local', path: string): Promise<{ success: boolean; message?: string }> => {
+import { TreeNode } from "@/interfaces/settings-project.interface";
+
+export const projectUpload = async (type: 'url' | 'local', path: string): 
+    Promise<{ language: string; dependencies: JSON; tree: TreeNode }> => {
     try {
         const response = await fetch('/api/uploadProject', {
             method: 'POST',

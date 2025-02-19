@@ -1,7 +1,13 @@
 // components/ProjectSettings.tsx
-import { Typography, Paper } from '@mui/material';
+import { Typography, Paper, Box } from '@mui/material';
+import { useProjectStore } from '@/store/useProjectStore';
+import { TogglePanel } from '@/components/molecules/TogglePanel/TogglePanel';
+import { TreeAccordion } from '@/components/molecules/TreeAccordion/TreeAccordion';
 
 export function ProjectSettings() {
+    const { projectData } = useProjectStore();
+    if (!projectData) return null;
+
     return (
         <Paper 
             elevation={0}
@@ -18,7 +24,18 @@ export function ProjectSettings() {
                 Project Settings
             </Typography>
             <Typography color="grey.600">
-                Manage settings for the loaded project.
+                <Box>
+                    <Typography variant="h6">Paramètres du projet</Typography>
+                    <TogglePanel title="Language">
+                        <pre>{JSON.stringify(projectData.language, null, 2)}</pre>
+                    </TogglePanel>
+                    <TogglePanel title="Dependencies">
+                        <pre>{JSON.stringify(projectData.dependencies, null, 2)}</pre>
+                    </TogglePanel>
+                    <TogglePanel title="Tree">
+                        <TreeAccordion node={projectData.tree} />
+                    </TogglePanel>
+                </Box>
             </Typography>
         </Paper>
     );

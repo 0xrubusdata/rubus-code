@@ -5,7 +5,7 @@ import { ModelSettingService } from '../services/model/model.setting.service';
 export class ModelController {
   constructor(private readonly modelSettingService: ModelSettingService) {}
 
-  @Get("rubuscodemodelsetting")
+  @Get("getmodelsetting")
   getSetting(): SettingsModelResponse {
     return this.modelSettingService.getSetting();
   }

@@ -80,6 +80,29 @@ const startDocker = () => {
   });
 };
 
+const isValidAbsolutePath = (inputPath) => {
+  const platform = process.platform;
+  
+  if (platform === 'linux' || platform === 'android') {
+      return inputPath.startsWith('/home/');
+  } else if (platform === 'darwin') { // macOS
+      return inputPath.startsWith('/Users/');
+  } else if (platform === 'win32') { // Windows
+      return /^[A-Za-z]:\\/.test(inputPath);
+  }
+  
+  return false;
+};
+
+const listSubdirectories = (directory) => {
+  try {
+      const items = fs.readdirSync(directory, { withFileTypes: true });
+      return items.filter(item => item.isDirectory()).map(dir => dir.name);
+  } catch (error) {
+      console.error(`Error reading directory: ${directory}`, error);
+      return [];
+  }
+};
 
 const configureEnvironment = async () => {
   // Check if config override exists and bypass setup
@@ -179,7 +202,27 @@ const configureEnvironment = async () => {
       }
     }
   }
+  
+  console.log("\nPlease specify the PROJECT_PATH where your projects are stored.");
+  console.log("\nThis path must be inside a valid user directory for your operating system.");
 
+  const projectPath = await askQuestion('Set PROJECT_PATH', process.env.PROJECT_PATH || '');
+  
+  while (!isValidAbsolutePath(projectPath) || !fs.existsSync(projectPath)) {
+      console.log("\n❌ Invalid path. Ensure it is absolute and exists in your system.");
+      projectPath = await askQuestion('Set PROJECT_PATH', process.env.PROJECT_PATH || '');
+  }
+  newConfig['PROJECT_PATH'] = projectPath;
+
+  console.log("\n✅ PROJECT_PATH has been set to: ", projectPath);
+  console.log("\nOnly the following directories and their subdirectories can be used:");
+  const subdirs = listSubdirectories(projectPath);
+  if (subdirs.length > 0) {
+      subdirs.forEach(subdir => console.log(` - ${subdir}`));
+  } else {
+      console.log("(No subdirectories found in the selected path)");
+  }
+  
   const generateEnvOverride = (config) => {
     const envOverridePath = path.join(__dirname, '../.env.override');
   

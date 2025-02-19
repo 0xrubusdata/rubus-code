@@ -69,7 +69,7 @@ curl http://localhost:3000/api/test-model
 ```
 
 ## 🏗️ Roadmap
-- [ ] **Implement AI model selection & validation** ✅ *(Done)*
+- [✔] **Implement AI model selection & validation** ✅ *(Done)*
 - [ ] **Load and index a project for AI awareness** ✅ *(In Progress)*
 - [ ] **Enable AI-driven development suggestions** *(Next Step)*
 

@@ -12,6 +12,7 @@ import {
     Box
 } from '@mui/material';
 import { projectUpload } from '@/services/project/projectUploadService';
+import { useProjectStore } from '@/store/useProjectStore';
 
 interface UploadProjectFormProps {
     onProjectUploaded: (data: { type: 'url' | 'local', path: string }) => void;
@@ -22,6 +23,7 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
     const [inputValue, setInputValue] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { setProjectData, setProjectLoaded } = useProjectStore();
 
     const validateAndUpload = async () => {
         setError('');
@@ -49,10 +51,11 @@ export function UploadProjectForm({ onProjectUploaded }: UploadProjectFormProps)
             }
         }
     
-        console.log("Valid input:", inputValue);
         try {
             const response = await projectUpload(isURL ? 'url' : 'local', inputValue);
             if (response) {
+                setProjectData(response); // Store project data
+                setProjectLoaded();   // Trigger project loading
                 setIsLoading(false);
             }
             onProjectUploaded({ type: isURL ? 'url' : 'local', path: inputValue });
